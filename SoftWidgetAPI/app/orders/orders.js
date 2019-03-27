@@ -60,10 +60,10 @@ const deleteOrder = async (req, res, id) => {
   }
 };
 
-const sendResponse = async (res, status, msg, resultOrErr) => {
+const sendResponse = async (res, status, message, resultOrErr) => {
   res.send({
     status: status,
-    msg: msg,
+    message: message,
     data: resultOrErr
   });
 };

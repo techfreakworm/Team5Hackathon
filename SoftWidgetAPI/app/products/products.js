@@ -6,13 +6,13 @@ const getProducts = async (req, res) => {
 
     res.send({
       status: true,
-      msg: "Products fetch successful!",
+      message: "Products fetch successful!",
       data: products
     });
   } catch (err) {
     res.send({
       status: false,
-      msg: "Products fetch unsuccessful!",
+      message: "Products fetch unsuccessful!",
       data: err
     });
   }
