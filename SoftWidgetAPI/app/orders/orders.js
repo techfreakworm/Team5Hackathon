@@ -1,6 +1,5 @@
 const createOrder = async (req, res) => {
   const data = req.body;
-  console.log(data);
 
   res.send("Order Placed Successfully!");
 };
