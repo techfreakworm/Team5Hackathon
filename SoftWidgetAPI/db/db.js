@@ -1,18 +1,23 @@
 const mongoose = require("mongoose"),
   blueBird = require("bluebird");
 
-process.env.NODE_ENV === "production"
-  ? mongooseConnectProd(process.env.MONGO_URL)
-  : mongooseConnectLocal(process.env.MONGO_URL);
+switch (process.env.NODE_ENV) {
+  case "test":
+    mongooseConnectTest(process.env.MONGO_URL);
+    break;
+  default:
+    mongooseConnectProdOrDev(process.env.MONGO_URL);
+    break;
+}
 
-async function mongooseConnectLocal(dbUrl) {
+async function mongooseConnectProdOrDev(dbUrl) {
   try {
     const authData = {
-      user: "root",
-      pass: "123456",
+      user: process.env.MONGO_USER,
+      pass: process.env.MONGO_PWD,
+      dbName: process.env.MONGO_DB,
       useNewUrlParser: true,
-      useCreateIndex: true,
-      dbName: "softwidgetapi"
+      useCreateIndex: true
     };
 
     const client = await mongoose.connect(dbUrl, authData);
@@ -23,14 +28,14 @@ async function mongooseConnectLocal(dbUrl) {
   }
 }
 
-async function mongooseConnectProd(dbUrl) {
+async function mongooseConnectTest(dbUrl) {
   try {
     const authData = {
-      user: "username",
-      pass: "pwd",
+      user: process.env.MONGO_USER_TEST,
+      pass: process.env.MONGO_PWD_TEST,
+      dbName: process.env.MONGO_DB_TEST,
       useNewUrlParser: true,
-      useCreateIndex: true,
-      dbName: "softwidgetapi"
+      useCreateIndex: true
     };
 
     const client = await mongoose.connect(dbUrl, authData);

@@ -1,3 +1,5 @@
+var ObjectId = require("mongoose").Types.ObjectId;
+
 const { Order } = require("./order");
 
 const createOrder = async (req, res) => {
@@ -14,13 +16,12 @@ const createOrder = async (req, res) => {
   }
 };
 
-const getOrder = async (req, res, id) => {
+const getOrder = async (req, res) => {
   try {
-    const orderId = req.body;
-    const order = await Order.findOne({
-      _id: orderId
+    const _id = req.params.id;
+    const order = await Order.find({
+      _id: new ObjectId(_id)
     });
-
     sendResponse(res, true, "Order Fetch Successfully!", order);
   } catch (err) {
     // throw err;
@@ -28,14 +29,18 @@ const getOrder = async (req, res, id) => {
   }
 };
 
-const updateOrder = async (req, res, id) => {
+const updateOrder = async (req, res) => {
   try {
+    const _id = req.params.id;
     const updateOrderData = req.body;
     const updateOrder = new Order(updateOrderData);
+    console.log(updateOrder);
 
     const result = await Order.updateOne(
-      { _id: updateOrderData._id },
-      updateOrder
+      { _id: new ObjectId(_id) },
+      {
+        $set: updateOrder
+      },
     );
 
     sendResponse(res, true, "Order Updated Successfully!", result);
@@ -45,7 +50,7 @@ const updateOrder = async (req, res, id) => {
   }
 };
 
-const deleteOrder = async (req, res, id) => {
+const deleteOrder = async (req, res) => {
   try {
     const deleteOrderData = req.body;
 

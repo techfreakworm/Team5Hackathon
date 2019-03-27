@@ -1,5 +1,5 @@
 
-const mongoURL = process.env.MONGO_URL || "mongodb://root:123456@localhost:27017/softwidgetapi";
+const mongoURL = process.env.MONGO_URL || "mongodb://root:$123456root@ds125526.mlab.com:25526/htm-softwidgetapi-dev";
 
 // always push mongo connection string in env var
 process.env.MONGO_URL = mongoURL;
