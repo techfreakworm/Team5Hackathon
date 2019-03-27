@@ -34,11 +34,36 @@
                 {
                     "name": "PostRequestIntent",
                     "slots": [],
+                  "samples": [
+                    "post",
+                    "tell me a joke",
+                    "send that post request",
+                    "post the data",
+                    "Send a post request"
+                  ]
+                },
+                {
+                    "name": "DeleteRequestIntent",
+                    "slots": [],
                     "samples": [
-                        "tell me a joke",
-                        "send that post request",
-                        "post the data",
-                        "Send a post request"
+                        "remove item ",
+                        "delete item ",
+                        "delete product ",
+                        "delete "
+                    ]
+                },
+                {
+                    "name": "GetRequestIntent",
+                    "slots": [],
+                    "samples": [
+                        "Get"
+                    ]
+                },
+                {
+                    "name": "PutRequestIntent",
+                    "slots": [],
+                    "samples": [
+                        "Put"
                     ]
                 }
             ],

@@ -18,6 +18,7 @@ const LaunchRequestHandler = {
             .getResponse();
     }
 };
+
 const HelloWorldIntentHandler = {
     canHandle(handlerInput) {
         return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
@@ -32,10 +33,52 @@ const HelloWorldIntentHandler = {
     }
 };
 
+const DeleteRequestIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+            handlerInput.requestEnvelope.request.intent.name === 'DeleteRequestIntent';
+    },
+    handle(handlerInput) {
+        const speechText = 'Deleted Successfully.';
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+            .getResponse();
+    }
+};
+
 const PostRequestIntentHandler = {
     canHandle(handlerInput) {
         return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
             handlerInput.requestEnvelope.request.intent.name === 'PostRequestIntent';
+    },
+    handle(handlerInput) {
+        const speechText = 'Post Successfully.';
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+            .getResponse();
+    }
+};
+
+const PutRequestIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+            handlerInput.requestEnvelope.request.intent.name === 'PutRequestIntent';
+    },
+    handle(handlerInput) {
+        const speechText = 'Put Successfully.';
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            //.reprompt('add a reprompt if you want to keep the session open for the user to respond')
+            .getResponse();
+    }
+};
+
+const GetRequestIntentHandler = {
+    canHandle(handlerInput) {
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest' &&
+            handlerInput.requestEnvelope.request.intent.name === 'GetRequestIntent';
     },
     async handle(handlerInput) {
         const response = await httpGet();
@@ -48,7 +91,6 @@ const PostRequestIntentHandler = {
             .getResponse();
     }
 };
-
 
 const HelpIntentHandler = {
     canHandle(handlerInput) {
@@ -164,7 +206,10 @@ exports.handler = Alexa.SkillBuilders.custom()
         HelpIntentHandler,
         CancelAndStopIntentHandler,
         SessionEndedRequestHandler,
+        GetRequestIntentHandler,
         PostRequestIntentHandler,
+        PutRequestIntentHandler,
+        DeleteRequestIntentHandler,
         IntentReflectorHandler) // make sure IntentReflectorHandler is last so it doesn't override your custom intent handlers
     .addErrorHandlers(
         ErrorHandler)
