@@ -1,3 +1,5 @@
+'use strict';
+
 // dot-env
 require("dot-env");
 
