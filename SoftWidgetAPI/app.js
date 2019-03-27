@@ -1,3 +1,5 @@
+'use strict';
+
 // dot-env
 require("dot-env");
 
@@ -21,8 +23,6 @@ fastify.use((req, res, next) => {
 fastify.use(bodyParser.urlencoded({
   extended: false
 }));
-
-fastify.use(bodyParser.json());
 
 fastify.get("/", (req, res) => res.send("Hello World!"));
 
