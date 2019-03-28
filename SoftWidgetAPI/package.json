@@ -15,11 +15,11 @@
   "dependencies": {
     "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",
-    "dot-env": "0.0.1",
+    "dotenv": "^7.0.0",
     "fastify": "^2.1.0",
+    "mongodb": "^3.2.2",
     "mongoose": "^5.4.20",
-    "mongoose-data-seed": "^1.0.7",
-    "mongodb": "^3.2.2"
+    "mongoose-data-seed": "^1.0.7"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"

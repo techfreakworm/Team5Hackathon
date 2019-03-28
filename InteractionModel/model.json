@@ -127,12 +127,8 @@
                     "name": "PutRequestIntent",
                     "slots": [],
                     "samples": [
-<<<<<<< HEAD
-                        "Put"
-=======
                         "what is the company about",
                         "Tell me about the company"
->>>>>>> f73f3e0f18f4a1b9f1f63915774b818667042d84
                     ]
                 }
             ],
