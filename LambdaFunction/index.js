@@ -61,11 +61,14 @@ const handlers = {
         this.emit(':responseReady');
     },
     'GetAllProducts': function() {
-        const about = "These are the products:Product1, Product2. You can book any product by saying 'order followed by product name'.";
+        httpsGet((theResult) => {
+            const result = theResult;
 
-        this.response.cardRenderer(SKILL_NAME, about);
-        this.response.speak(about).listen("more");
-        this.emit(':responseReady');
+            const speechOutput = result;
+            this.response.cardRenderer(SKILL_NAME, result);
+            this.response.speak(speechOutput);
+            this.emit(':responseReady');
+        });
     },
     'GetProduct': function() {
         const product = this.event.request.intent.slots.product_name.value;
@@ -107,33 +110,32 @@ const handlers = {
     },
 };
 
-function httpGet(optionsHost, optionsPath) {
-    return new Promise(((resolve, reject) => {
-        var options = {
-            host: optionsHost,
-            port: 443,
-            path: optionsPath,
-            method: 'GET',
-        };
+function httpsGet(callback) {
 
-        const request = https.request(options, (response) => {
-            response.setEncoding('utf8');
-            let returnData = '';
+    var options = {
+        port: 443,
+        host: 'softwidgetapi.herokuapp.com',
+        path: '/api/getproducts',
+        method: 'GET',
+    };
 
-            response.on('data', (chunk) => {
-                returnData += chunk;
-            });
+    var req = https.request(options, res => {
+        res.setEncoding('utf8');
+        var responseString = "";
 
-            response.on('end', () => {
-                resolve(JSON.parse(returnData));
-            });
-
-            response.on('error', (error) => {
-                reject(error);
-            });
+        //accept incoming data asynchronously
+        res.on('data', chunk => {
+            responseString = responseString + chunk;
         });
-        request.end();
-    }));
+
+        //return the data when streaming is complete
+        res.on('end', () => {
+            console.log(responseString);
+            callback(responseString);
+        });
+
+    });
+    req.end();
 }
 
 exports.handler = function(event, context, callback) {
