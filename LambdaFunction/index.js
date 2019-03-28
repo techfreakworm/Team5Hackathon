@@ -51,7 +51,7 @@ const data = [
 
 const handlers = {
     'LaunchRequest': function () {
-        this.emit('AboutCompany');
+        this.emit('PlaceOrder');
     },
     'AboutCompany': function () {
         const about = "This is about company. ?What are the products offered?";
@@ -113,18 +113,27 @@ const handlers = {
     },
     'PlaceOrder': function () {
         // const username=httpGet()
-        const name = this.event.request.intent.slots.name.value;
-        const product_name = this.event.request.intent.slots.product_name.value;
-        const product_quantity = this.event.request.intent.slots.product_quantity.value;
-        const phone = this.event.request.intent.slots.phone.value;
-        const house_no = this.event.request.intent.slots.house_no.value;
-        const street_name = this.event.request.intent.slots.street_name.value;
-        const email = this.event.request.intent.slots.email.value;
+        //const name = this.event.request.intent.slots.name.value;
+        //const product_name = this.event.request.intent.slots.product_name.value;
+        //const product_quantity = this.event.request.intent.slots.product_quantity.value;
+        //const phone = this.event.request.intent.slots.phone.value;
+        //const house_no = this.event.request.intent.slots.house_no.value;
+        //const street_name = this.event.request.intent.slots.street_name.value;
+        //const email = this.event.request.intent.slots.email.value;
 
-        const output = "Order is placed:" + product_quantity + product_name + ", receipt sent to " + email;
-        this.response.cardRenderer(SKILL_NAME, output);
-        this.response.speak(output).listen("more");
-        this.emit(':responseReady');
+        //const output = "Order is placed:" + product_quantity + product_name + ", receipt sent to " + email;
+        //this.response.cardRenderer(SKILL_NAME, output);
+        //this.response.speak(output).listen("more");
+        //this.emit(':responseReady');
+        var requestData = '{ "shippingAddress": {	"address1": "3230 Reagenea Dr",  	"address2": "3230 Reagenea Dr",    	"state": "Dallas",    	"zip": 75098	},	"billingAddress": {    	"address1": "3230 Reagenea Dr",    	"address2": "3230 Reagenea Dr",    	"state": "Dallas",   	"zip": 75098	}}';
+        httpsPost(requestData, '/api/createorder', (theResult) => {
+            const result = theResult;
+
+            const speechOutput = JSON.parse(result).message;
+            this.response.cardRenderer(SKILL_NAME, result);
+            this.response.speak(speechOutput);
+            this.emit(':responseReady');
+        });
     },
     'AMAZON.HelpIntent': function () {
         const speechOutput = HELP_MESSAGE;
@@ -226,6 +235,35 @@ function httpsPut(apiPath, callback) {
     });
     req.end();
 }
+
+function httpsPost(requestData, apiPath, callback) {
+    var options = {
+        port: 443,
+        host: 'softwidgetapi.herokuapp.com',
+        path: apiPath,
+        json: requestData,
+        method: 'POST',
+    };
+
+    var req = https.request(options, res => {
+        res.setEncoding('utf8');
+        var responseString = "";
+
+        //accept incoming data asynchronously
+        res.on('data', chunk => {
+            responseString = responseString + chunk;
+        });
+
+        //return the data when streaming is complete
+        res.on('end', () => {
+            console.log(responseString);
+            callback(responseString);
+        });
+
+    });
+    req.end();
+}
+
 exports.handler = function (event, context, callback) {
     const alexa = Alexa.handler(event, context, callback);
     alexa.APP_ID = APP_ID;
