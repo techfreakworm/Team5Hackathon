@@ -91,6 +91,26 @@ const handlers = {
             this.emit(':responseReady');
         });
     },
+    'DeleteOrder': function () {
+        httpsDelete('/api/deleteorder/1', (theResult) => {
+            const result = theResult;
+
+            const speechOutput = JSON.parse(result).message;
+            this.response.cardRenderer(SKILL_NAME, result);
+            this.response.speak(speechOutput);
+            this.emit(':responseReady');
+        });
+    },
+    'UpdateOrder': function () {
+        httpsPut('/api/updateorder/5c9b9f56245b2371540abce6', (theResult) => {
+            const result = theResult;
+
+            const speechOutput = JSON.parse(result).message;
+            this.response.cardRenderer(SKILL_NAME, result);
+            this.response.speak(speechOutput);
+            this.emit(':responseReady');
+        });
+    },
     'PlaceOrder': function () {
         // const username=httpGet()
         const name = this.event.request.intent.slots.name.value;
@@ -151,6 +171,61 @@ function httpsGet(apiPath, callback) {
     req.end();
 }
 
+function httpsDelete(apiPath, callback) {
+
+    var options = {
+        port: 443,
+        host: 'softwidgetapi.herokuapp.com',
+        path: apiPath,
+        method: 'DELETE',
+    };
+
+    var req = https.request(options, res => {
+        res.setEncoding('utf8');
+        var responseString = "";
+
+        //accept incoming data asynchronously
+        res.on('data', chunk => {
+            responseString = responseString + chunk;
+        });
+
+        //return the data when streaming is complete
+        res.on('end', () => {
+            console.log(responseString);
+            callback(responseString);
+        });
+
+    });
+    req.end();
+}
+
+function httpsPut(apiPath, callback) {
+
+    var options = {
+        port: 443,
+        host: 'softwidgetapi.herokuapp.com',
+        path: apiPath,
+        method: 'PUT',
+    };
+
+    var req = https.request(options, res => {
+        res.setEncoding('utf8');
+        var responseString = "";
+
+        //accept incoming data asynchronously
+        res.on('data', chunk => {
+            responseString = responseString + chunk;
+        });
+
+        //return the data when streaming is complete
+        res.on('end', () => {
+            console.log(responseString);
+            callback(responseString);
+        });
+
+    });
+    req.end();
+}
 exports.handler = function (event, context, callback) {
     const alexa = Alexa.handler(event, context, callback);
     alexa.APP_ID = APP_ID;
