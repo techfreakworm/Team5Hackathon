@@ -8,5 +8,5 @@ node_modules
 md-seed-config.js
 md-seed-generator.json
 
-# ignore env json
-.env.json
+# ignore env
+.env
