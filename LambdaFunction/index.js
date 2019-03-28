@@ -50,35 +50,48 @@ const data = [
 //=========================================================================================================================================
 
 const handlers = {
-    'LaunchRequest': function() {
+    'LaunchRequest': function () {
         this.emit('AboutCompany');
     },
-    'AboutCompany': function() {
+    'AboutCompany': function () {
         const about = "This is about company. ?What are the products offered?";
 
         this.response.cardRenderer(SKILL_NAME, about);
         this.response.speak(about).listen("more");
         this.emit(':responseReady');
     },
-    'GetAllProducts': function() {
-        httpsGet((theResult) => {
+    'GetAllProducts': function () {
+        httpsGet('/api/getproducts', (theResult) => {
             const result = theResult;
 
-            const speechOutput = result;
+            const speechOutput = JSON.parse(result).message;
             this.response.cardRenderer(SKILL_NAME, result);
             this.response.speak(speechOutput);
             this.emit(':responseReady');
         });
     },
-    'GetProduct': function() {
-        const product = this.event.request.intent.slots.product_name.value;
-        // const about = "These are the products:Product1, Product2. You can book any product by saying 'order followed by product name'.";
-        const output = "We'll describe the product:" + product;
-        this.response.cardRenderer(SKILL_NAME, output);
-        this.response.speak(output).listen("more");
-        this.emit(':responseReady');
+    'GetProduct': function () {
+        // const product = this.event.request.intent.slots.product_name.value;
+        httpsGet('/api/getproducts', (theResult) => {
+            const result = theResult;
+
+            const speechOutput = JSON.parse(result).message;
+            this.response.cardRenderer(SKILL_NAME, result);
+            this.response.speak(speechOutput);
+            this.emit(':responseReady');
+        });
     },
-    'PlaceOrder': function() {
+    'GetOrder': function () {
+        httpsGet('/api/getorder/5c9b9f56245b2371540abce6', (theResult) => {
+            const result = theResult;
+
+            const speechOutput = JSON.parse(result).message;
+            this.response.cardRenderer(SKILL_NAME, result);
+            this.response.speak(speechOutput);
+            this.emit(':responseReady');
+        });
+    },
+    'PlaceOrder': function () {
         // const username=httpGet()
         const name = this.event.request.intent.slots.name.value;
         const product_name = this.event.request.intent.slots.product_name.value;
@@ -93,29 +106,29 @@ const handlers = {
         this.response.speak(output).listen("more");
         this.emit(':responseReady');
     },
-    'AMAZON.HelpIntent': function() {
+    'AMAZON.HelpIntent': function () {
         const speechOutput = HELP_MESSAGE;
         const reprompt = HELP_REPROMPT;
 
         this.response.speak(speechOutput).listen(reprompt);
         this.emit(':responseReady');
     },
-    'AMAZON.CancelIntent': function() {
+    'AMAZON.CancelIntent': function () {
         this.response.speak(STOP_MESSAGE);
         this.emit(':responseReady');
     },
-    'AMAZON.StopIntent': function() {
+    'AMAZON.StopIntent': function () {
         this.response.speak(STOP_MESSAGE);
         this.emit(':responseReady');
     },
 };
 
-function httpsGet(callback) {
+function httpsGet(apiPath, callback) {
 
     var options = {
         port: 443,
         host: 'softwidgetapi.herokuapp.com',
-        path: '/api/getproducts',
+        path: apiPath,
         method: 'GET',
     };
 
@@ -138,7 +151,7 @@ function httpsGet(callback) {
     req.end();
 }
 
-exports.handler = function(event, context, callback) {
+exports.handler = function (event, context, callback) {
     const alexa = Alexa.handler(event, context, callback);
     alexa.APP_ID = APP_ID;
     alexa.registerHandlers(handlers);
