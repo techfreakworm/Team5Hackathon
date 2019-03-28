@@ -2,7 +2,7 @@ const { mongoose } = require("../../db/db");
 const { Schema } = mongoose;
 
 const orderSchema = new Schema({
-  productId: {
+  product: {
     type: Schema.Types.ObjectId,
     ref: "Product"
   },
@@ -16,8 +16,14 @@ const orderSchema = new Schema({
     required: true
   },
   salesTax: Number,
-  createdAt: Date,
-  updatedAt: Date,
+  createdAt: { 
+    type: Date, 
+    default: new Date() 
+  },
+  updatedAt: { 
+    type: Date, 
+    default: new Date() 
+  },
   shippingMethod: String,
   state: {
     type: String,
@@ -27,14 +33,20 @@ const orderSchema = new Schema({
     type: String,
     default: "COD"
   },
-  quantity: Number,
+  quantity: {
+    type: Number, 
+    default: 1
+  },
   customer: {
     firstName: String,
     lastName: String,
     email: String,
     phoneNumber: String
   },
-  isDeleted: Boolean,
+  isDeleted: {
+    type: Boolean,
+    default: false
+  },
   deletedAt: Date
 });
 
