@@ -1,0 +1,12 @@
+node_modules
+
+# ignore test cases
+/spec
+
+# ignore seed data
+/seeders
+md-seed-config.js
+md-seed-generator.json
+
+# ignore env
+.env
