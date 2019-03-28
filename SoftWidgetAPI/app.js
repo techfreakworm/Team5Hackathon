@@ -2,7 +2,7 @@
 
 // dot-env
 if (process.env.NODE_ENV !== "production")
-  require("dot-env");
+  require("dotenv").config();
 
 // deps
 const bodyParser = require("body-parser");
