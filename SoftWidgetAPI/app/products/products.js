@@ -1,13 +1,21 @@
-const getProducts = async (req, res) => {
-  const products = [
-    { id: 1, name: "abc", price: "$23" },
-    { id: 2, name: "xyz", price: "$53" }
-  ];
+const { Product } = require("./product");
 
-  res.send({
-    total: products.length,
-    data: products
-  });
+const getProducts = async (req, res) => {
+  try {
+    const products = await Product.find({});
+
+    res.send({
+      status: true,
+      message: "Products fetch successful!",
+      data: products
+    });
+  } catch (err) {
+    res.send({
+      status: false,
+      message: "Products fetch unsuccessful!",
+      data: err
+    });
+  }
 };
 
 exports.getProducts = getProducts;

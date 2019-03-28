@@ -1,5 +1,8 @@
+'use strict';
+
 // dot-env
-require("dot-env");
+if (process.env.NODE_ENV !== "production")
+  require("dotenv").config();
 
 // deps
 const bodyParser = require("body-parser");
@@ -22,8 +25,6 @@ fastify.use(bodyParser.urlencoded({
   extended: false
 }));
 
-fastify.use(bodyParser.json());
-
 fastify.get("/", (req, res) => res.send("Hello World!"));
 
 // routes
@@ -34,7 +35,7 @@ for (let apiRoute of apiRoutes) {
   }
 }
 
-fastify.listen(PORT, err => {
+fastify.listen(PORT, "0.0.0.0", err => {
   if (err) throw err;
 
   console.log(`SoftWidgetApi Server running on port: ${PORT}`);
