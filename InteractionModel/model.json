@@ -2,7 +2,8 @@
     "interactionModel": {
         "languageModel": {
             "invocationName": "soft widget market",
-            "intents": [{
+            "intents": [
+                {
                     "name": "AMAZON.CancelIntent",
                     "samples": []
                 },
@@ -19,156 +20,281 @@
                     "samples": []
                 },
                 {
-                    "name": "GetAllProducts",
+                    "name": "GetProduct",
                     "slots": [],
                     "samples": [
-                        "show me all the products",
-                        "What are the products offered",
-                        "get products",
-                        "list products",
-                        "tell me about the products"
+                        "product",
+                        "about product",
+                        "what is the product about",
+                        "what is the product",
+                        "tell me more about the product"
                     ]
                 },
                 {
-                    "name": "GetProduct",
-                    "slots": [{
-                        "name": "product_name",
-                        "type": "AMAZON.US_FIRST_NAME"
-                    }],
+                    "name": "ModifyOrder",
+                    "slots": [
+                        {
+                            "name": "order_number",
+                            "type": "AMAZON.NUMBER"
+                        },
+                        {
+                            "name": "address_one",
+                            "type": "AMAZON.NUMBER"
+                        },
+                        {
+                            "name": "address_two",
+                            "type": "AMAZON.StreetAddress"
+                        },
+                        {
+                            "name": "state",
+                            "type": "AMAZON.US_STATE"
+                        },
+                        {
+                            "name": "zip",
+                            "type": "AMAZON.NUMBER"
+                        },
+                        {
+                            "name": "firstName",
+                            "type": "AMAZON.US_FIRST_NAME"
+                        },
+                        {
+                            "name": "lastName",
+                            "type": "AMAZON.US_FIRST_NAME"
+                        },
+                        {
+                            "name": "phone",
+                            "type": "AMAZON.PhoneNumber"
+                        }
+                    ],
                     "samples": [
-                        "tell me about {product_name}"
+                        "{phone}",
+                        "{lastName}",
+                        "{firstName}",
+                        "{zip}",
+                        "{state}",
+                        "{address_two}",
+                        "{address_one}",
+                        "change my order",
+                        "modify order {order_number}",
+                        "update order {order_number}"
+                    ]
+                },
+                {
+                    "name": "CancelOrder",
+                    "slots": [
+                        {
+                            "name": "order_number",
+                            "type": "AMAZON.NUMBER"
+                        }
+                    ],
+                    "samples": [
+                        "cancel order with order number {order_number}",
+                        "cancel my order",
+                        "cancel order {order_number}"
+                    ]
+                },
+                {
+                    "name": "InfoOrder",
+                    "slots": [],
+                    "samples": [
+                        "show orders",
+                        "show me all orders",
+                        "fetch all orders",
+                        "fetch orders",
+                        "get orders",
+                        "get all orders"
+                    ]
+                },
+                {
+                    "name": "AboutCompany",
+                    "slots": [],
+                    "samples": [
+                        "what is the company about",
+                        "Tell me about the company"
+                    ]
+                },
+                {
+                    "name": "GetOrder",
+                    "slots": [
+                        {
+                            "name": "order_number",
+                            "type": "AMAZON.NUMBER"
+                        }
+                    ],
+                    "samples": [
+                        "order number {order_number}",
+                        "what's the status of order with order number {order_number}",
+                        "tell me about order number {order_number}",
+                        "get order with order number {order_number}"
                     ]
                 },
                 {
                     "name": "PlaceOrder",
-                    "slots": [{
-                            "name": "product_quantity",
-                            "type": "AMAZON.NUMBER"
-                        },
+                    "slots": [
                         {
-                            "name": "product_name",
-                            "type": "AMAZON.US_FIRST_NAME"
+                            "name": "quantity",
+                            "type": "AMAZON.NUMBER"
                         },
                         {
                             "name": "phone",
                             "type": "AMAZON.PhoneNumber"
                         },
                         {
-                            "name": "house_no",
-                            "type": "AMAZON.NUMBER"
-                        },
-                        {
-                            "name": "street_name",
-                            "type": "AMAZON.StreetName"
-                        },
-                        {
-                            "name": "name",
+                            "name": "firstName",
                             "type": "AMAZON.US_FIRST_NAME"
                         },
                         {
-                            "name": "email",
-                            "type": "AMAZON.GB_FIRST_NAME"
+                            "name": "lastName",
+                            "type": "AMAZON.US_FIRST_NAME"
+                        },
+                        {
+                            "name": "paymentMethod",
+                            "type": "AMAZON.US_FIRST_NAME"
+                        },
+                        {
+                            "name": "shippingMethod",
+                            "type": "AMAZON.US_FIRST_NAME"
+                        },
+                        {
+                            "name": "zip",
+                            "type": "AMAZON.NUMBER"
+                        },
+                        {
+                            "name": "state",
+                            "type": "AMAZON.US_STATE"
+                        },
+                        {
+                            "name": "address_one",
+                            "type": "AMAZON.NUMBER"
+                        },
+                        {
+                            "name": "address_two",
+                            "type": "AMAZON.StreetAddress"
                         }
                     ],
                     "samples": [
-                        "{email}",
-                        "{name}",
-                        "place order",
-                        "{street_name}",
-                        "{house_no}",
+                        "{address_two}",
+                        "{address_one}",
+                        "{state}",
+                        "{zip}",
+                        "{shippingMethod}",
+                        "{paymentMethod}",
+                        "{lastName}",
+                        "{firstName}",
                         "{phone}",
-                        "order {product_quantity} {product_name}"
-                    ]
-                },
-                {
-                    "name": "ModifyOrder",
-                    "slots": [],
-                    "samples": []
-                },
-                {
-                    "name": "CancelOrder",
-                    "slots": [],
-                    "samples": []
-                },
-                {
-                    "name": "InfoOrder",
-                    "slots": [],
-                    "samples": []
-                },
-                {
-                    "name": "AboutCompany",
-                    "slots": [],
-                  "samples": [
-                    "post",
-                    "tell me a joke",
-                    "send that post request",
-                    "post the data",
-                    "Send a post request"
-                  ]
-                },
-                {
-                    "name": "DeleteRequestIntent",
-                    "slots": [],
-                    "samples": [
-                        "remove item ",
-                        "delete item ",
-                        "delete product ",
-                        "delete "
-                    ]
-                },
-                {
-                    "name": "GetRequestIntent",
-                    "slots": [],
-                    "samples": [
-                        "Get"
-                    ]
-                },
-                {
-                    "name": "PutRequestIntent",
-                    "slots": [],
-                    "samples": [
-                        "what is the company about",
-                        "Tell me about the company"
+                        "{quantity}",
+                        "place order"
                     ]
                 }
             ],
             "types": []
         },
         "dialog": {
-            "intents": [{
+            "intents": [
+                {
                     "name": "GetProduct",
                     "confirmationRequired": false,
                     "prompts": {},
-                    "slots": [{
-                        "name": "product_name",
-                        "type": "AMAZON.US_FIRST_NAME",
-                        "confirmationRequired": false,
-                        "elicitationRequired": true,
-                        "prompts": {
-                            "elicitation": "Elicit.Slot.764891029122.408538253227"
-                        }
-                    }]
+                    "slots": []
                 },
                 {
-                    "name": "PlaceOrder",
+                    "name": "GetOrder",
                     "confirmationRequired": false,
                     "prompts": {},
-                    "slots": [{
-                            "name": "product_quantity",
+                    "slots": [
+                        {
+                            "name": "order_number",
                             "type": "AMAZON.NUMBER",
                             "confirmationRequired": false,
                             "elicitationRequired": true,
                             "prompts": {
-                                "elicitation": "Elicit.Slot.871714096530.197297376335"
+                                "elicitation": "Elicit.Slot.110841535436.642042633431"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "CancelOrder",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "order_number",
+                            "type": "AMAZON.NUMBER",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.231948116153.279226541260"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "ModifyOrder",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
+                        {
+                            "name": "order_number",
+                            "type": "AMAZON.NUMBER",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.426984239889.842866378846"
                             }
                         },
                         {
-                            "name": "product_name",
+                            "name": "address_one",
+                            "type": "AMAZON.NUMBER",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.426984239889.494135809280"
+                            }
+                        },
+                        {
+                            "name": "address_two",
+                            "type": "AMAZON.StreetAddress",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.426984239889.176791180324"
+                            }
+                        },
+                        {
+                            "name": "state",
+                            "type": "AMAZON.US_STATE",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.426984239889.944923694078"
+                            }
+                        },
+                        {
+                            "name": "zip",
+                            "type": "AMAZON.NUMBER",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.426984239889.974459277466"
+                            }
+                        },
+                        {
+                            "name": "firstName",
                             "type": "AMAZON.US_FIRST_NAME",
                             "confirmationRequired": false,
                             "elicitationRequired": true,
                             "prompts": {
-                                "elicitation": "Elicit.Slot.871714096530.433250095046"
+                                "elicitation": "Elicit.Slot.426984239889.791006049799"
+                            }
+                        },
+                        {
+                            "name": "lastName",
+                            "type": "AMAZON.US_FIRST_NAME",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.426984239889.1118401932283"
                             }
                         },
                         {
@@ -177,43 +303,104 @@
                             "confirmationRequired": false,
                             "elicitationRequired": true,
                             "prompts": {
-                                "elicitation": "Elicit.Slot.871714096530.11115342200"
+                                "elicitation": "Elicit.Slot.426984239889.317246043317"
                             }
-                        },
+                        }
+                    ]
+                },
+                {
+                    "name": "PlaceOrder",
+                    "confirmationRequired": false,
+                    "prompts": {},
+                    "slots": [
                         {
-                            "name": "house_no",
+                            "name": "quantity",
                             "type": "AMAZON.NUMBER",
                             "confirmationRequired": false,
                             "elicitationRequired": true,
                             "prompts": {
-                                "elicitation": "Elicit.Slot.871714096530.734507090518"
+                                "elicitation": "Elicit.Slot.131444890224.164426233795"
                             }
                         },
                         {
-                            "name": "street_name",
-                            "type": "AMAZON.StreetName",
+                            "name": "phone",
+                            "type": "AMAZON.PhoneNumber",
                             "confirmationRequired": false,
                             "elicitationRequired": true,
                             "prompts": {
-                                "elicitation": "Elicit.Slot.871714096530.420257378556"
+                                "elicitation": "Elicit.Slot.131444890224.411602837511"
                             }
                         },
                         {
-                            "name": "name",
+                            "name": "firstName",
                             "type": "AMAZON.US_FIRST_NAME",
                             "confirmationRequired": false,
                             "elicitationRequired": true,
                             "prompts": {
-                                "elicitation": "Elicit.Slot.871714096530.827983026624"
+                                "elicitation": "Elicit.Slot.131444890224.94053687486"
                             }
                         },
                         {
-                            "name": "email",
-                            "type": "AMAZON.GB_FIRST_NAME",
+                            "name": "lastName",
+                            "type": "AMAZON.US_FIRST_NAME",
                             "confirmationRequired": false,
                             "elicitationRequired": true,
                             "prompts": {
-                                "elicitation": "Elicit.Slot.871714096530.163673035221"
+                                "elicitation": "Elicit.Slot.131444890224.1191771809993"
+                            }
+                        },
+                        {
+                            "name": "paymentMethod",
+                            "type": "AMAZON.US_FIRST_NAME",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.131444890224.1198859882592"
+                            }
+                        },
+                        {
+                            "name": "shippingMethod",
+                            "type": "AMAZON.US_FIRST_NAME",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.131444890224.1167598047262"
+                            }
+                        },
+                        {
+                            "name": "zip",
+                            "type": "AMAZON.NUMBER",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.131444890224.1292071401801"
+                            }
+                        },
+                        {
+                            "name": "state",
+                            "type": "AMAZON.US_STATE",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.131444890224.870583880790"
+                            }
+                        },
+                        {
+                            "name": "address_one",
+                            "type": "AMAZON.NUMBER",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.131444890224.104319328412"
+                            }
+                        },
+                        {
+                            "name": "address_two",
+                            "type": "AMAZON.StreetAddress",
+                            "confirmationRequired": false,
+                            "elicitationRequired": true,
+                            "prompts": {
+                                "elicitation": "Elicit.Slot.131444890224.1191499621780"
                             }
                         }
                     ]
@@ -221,61 +408,258 @@
             ],
             "delegationStrategy": "ALWAYS"
         },
-        "prompts": [{
+        "prompts": [
+            {
                 "id": "Elicit.Slot.764891029122.408538253227",
-                "variations": [{
-                    "type": "PlainText",
-                    "value": "What was the product name again?"
-                }]
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What was the product name again?"
+                    }
+                ]
             },
             {
                 "id": "Elicit.Slot.871714096530.197297376335",
-                "variations": [{
-                    "type": "PlainText",
-                    "value": "Please provide product quantity"
-                }]
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Please provide product quantity"
+                    }
+                ]
             },
             {
                 "id": "Elicit.Slot.871714096530.433250095046",
-                "variations": [{
-                    "type": "PlainText",
-                    "value": "Please provide product name"
-                }]
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Please provide product name"
+                    }
+                ]
             },
             {
                 "id": "Elicit.Slot.871714096530.734507090518",
-                "variations": [{
-                    "type": "PlainText",
-                    "value": "Please tell me your house number or flat number"
-                }]
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Please tell me your house number or flat number"
+                    }
+                ]
             },
             {
                 "id": "Elicit.Slot.871714096530.420257378556",
-                "variations": [{
-                    "type": "PlainText",
-                    "value": "Tell me your street name"
-                }]
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Tell me your street name"
+                    }
+                ]
             },
             {
                 "id": "Elicit.Slot.871714096530.11115342200",
-                "variations": [{
-                    "type": "PlainText",
-                    "value": "please give your phone number"
-                }]
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "please give your phone number"
+                    }
+                ]
             },
             {
                 "id": "Elicit.Slot.871714096530.827983026624",
-                "variations": [{
-                    "type": "PlainText",
-                    "value": "It's really shamefull to ask. But what was your name again?"
-                }]
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "It's really shamefull to ask. But what was your name again?"
+                    }
+                ]
             },
             {
                 "id": "Elicit.Slot.871714096530.163673035221",
-                "variations": [{
-                    "type": "PlainText",
-                    "value": "please tell me your email"
-                }]
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "please tell me your email"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.110841535436.642042633431",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What's the order number"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.231948116153.279226541260",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What was the order number?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.426984239889.842866378846",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What was the order number?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.426984239889.494135809280",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What is your house number?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.426984239889.176791180324",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What is the apartment name or street name?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.426984239889.944923694078",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "what is the state"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.426984239889.974459277466",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "what is the zip code"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.426984239889.791006049799",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What is your first name?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.426984239889.1118401932283",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What is your last name"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.426984239889.317246043317",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What is your phone number"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.131444890224.164426233795",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "how many products do you want to order?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.131444890224.411602837511",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What's your phone number?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.131444890224.94053687486",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "First name would be?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.131444890224.1191771809993",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "last name would be?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.131444890224.1198859882592",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "Payment method. Possible methods 'cash' or 'card'"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.131444890224.1167598047262",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "shipping method. possible value would be 'prime' or 'standard'"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.131444890224.1292071401801",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "what's the zip code?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.131444890224.870583880790",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "State would be?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.131444890224.104319328412",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What's your house number?"
+                    }
+                ]
+            },
+            {
+                "id": "Elicit.Slot.131444890224.1191499621780",
+                "variations": [
+                    {
+                        "type": "PlainText",
+                        "value": "What's your street name"
+                    }
+                ]
             }
         ]
     }
