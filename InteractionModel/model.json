@@ -576,7 +576,7 @@
                 "variations": [
                     {
                         "type": "PlainText",
-                        "value": "What is number of product you want to order?"
+                        "value": "how many products do you want to order?"
                     }
                 ]
             },

@@ -20,8 +20,8 @@ const https = require('https');
 //Make sure to enclose your value in quotes, like this: const APP_ID = 'amzn1.ask.skill.bb4045e6-b3e8-4133-b650-72923c5980f1';
 const APP_ID = "amzn1.ask.skill.2431ad4d-8bab-4951-91a4-3f4c8fffc56d";
 
-const SKILL_NAME = 'Soft Technologies';
-const ABOUT_COMPANY = 'Soft Technologies is a hotshot tech company. For more info say, "help on soft technologies"'
+const SKILL_NAME = 'Soft Widget';
+const ABOUT_COMPANY = 'Soft Widget is a hotshot tech company. For more info say, "help me"'
 const listen_message = 'What do you want to do next?'
 const HELP_MESSAGE = "you can get info about products, place an order, modify an order, get status of order and even delete an order"
 const STOP_MESSAGE = "Goodbye! have a great day ahead!"
@@ -259,7 +259,7 @@ const handlers = {
             console.log(theResult);
             const speechOutput = result.message + "with order number " +result.data.orderNumber;
             this.response.cardRenderer(SKILL_NAME, speechOutput);
-            this.response.speak(speechOutput).listen(listen_message);
+            this.response.speak(speechOutput+". Goodbye. Have a great day ahead!");
             this.emit(':responseReady');
         });
     },
