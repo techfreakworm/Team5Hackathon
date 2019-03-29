@@ -20,99 +20,189 @@ const https = require('https');
 //Make sure to enclose your value in quotes, like this: const APP_ID = 'amzn1.ask.skill.bb4045e6-b3e8-4133-b650-72923c5980f1';
 const APP_ID = "amzn1.ask.skill.2431ad4d-8bab-4951-91a4-3f4c8fffc56d";
 
-const SKILL_NAME = 'Space Facts';
-const GET_FACT_MESSAGE = "Here's your fact: ";
-const HELP_MESSAGE = 'You can say tell me a space fact, or, you can say exit... What can I help you with?';
-const HELP_REPROMPT = 'What can I help you with?';
-const STOP_MESSAGE = 'Goodbye!';
-
-//=========================================================================================================================================
-//TODO: Replace this data with your own.  You can find translations of this data at http://github.com/alexa/skill-sample-node-js-fact/data
-//=========================================================================================================================================
-const data = [
-    'A year on Mercury is just 88 days long.',
-    'Despite being farther from the Sun, Venus experiences higher temperatures than Mercury.',
-    'Venus rotates counter-clockwise, possibly because of a collision in the past with an asteroid.',
-    'On Mars, the Sun appears about half the size as it does on Earth.',
-    'Earth is the only planet not named after a god.',
-    'Jupiter has the shortest day of all the planets.',
-    'The Milky Way galaxy will collide with the Andromeda Galaxy in about 5 billion years.',
-    'The Sun contains 99.86% of the mass in the Solar System.',
-    'The Sun is an almost perfect sphere.',
-    'A total solar eclipse can happen once every 1 to 2 years. This makes them a rare event.',
-    'Saturn radiates two and a half times more energy into space than it receives from the sun.',
-    'The temperature inside the Sun can reach 15 million degrees Celsius.',
-    'The Moon is moving approximately 3.8 cm away from our planet every year.',
-];
-
-//=========================================================================================================================================
-//Editing anything below this line might break your skill.
-//=========================================================================================================================================
-
+const SKILL_NAME = 'Soft Widget';
+const ABOUT_COMPANY = 'Soft Widget is a hotshot tech company. For more info say, "help me"'
+const listen_message = 'What do you want to do next?'
+const HELP_MESSAGE = "you can get info about products, place an order, modify an order, get status of order and even delete an order"
+const STOP_MESSAGE = "Goodbye! have a great day ahead!"
 const handlers = {
     'LaunchRequest': function () {
-        this.emit('PlaceOrder');
+        this.emit('AboutCompany');
     },
     'AboutCompany': function () {
-        const about = "This is about company. ?What are the products offered?";
+        const about = ABOUT_COMPANY;
 
         this.response.cardRenderer(SKILL_NAME, about);
-        this.response.speak(about).listen("more");
+        this.response.speak(about).listen(listen_message);
         this.emit(':responseReady');
     },
     'GetAllProducts': function () {
-        httpsGet('/api/getproducts', (theResult) => {
+        httpsGet('/api/products', (theResult) => {
             const result = theResult;
-
-            const speechOutput = JSON.parse(result).message;
-            this.response.cardRenderer(SKILL_NAME, result);
-            this.response.speak(speechOutput);
+            const allProducts = JSON.parse(result).data;
+            var productList = [];
+            for (let i = 0; i<allProducts.length;i++){
+                productList.push(allProducts[i].name)
+            }
+            const speechOutput = "Here are all the products: "+productList.toString();
+            this.response.cardRenderer(SKILL_NAME, speechOutput);
+            this.response.speak(speechOutput).listen(listen_message);
             this.emit(':responseReady');
         });
     },
     'GetProduct': function () {
-        // const product = this.event.request.intent.slots.product_name.value;
-        httpsGet('/api/getproducts', (theResult) => {
+        //const product_name = this.event.request.intent.slots.product_name.value;
+        const product_name = "Soft Generation 2";
+        httpsGet('/api/products', (theResult) => {
             const result = theResult;
-
-            const speechOutput = JSON.parse(result).message;
-            this.response.cardRenderer(SKILL_NAME, result);
-            this.response.speak(speechOutput);
+            const allProducts = JSON.parse(result).data;
+            // var thisProduct= "Product not found";
+            // for (let i =0; i<allProducts.length; i++)
+            // {
+            //     if(allProducts[i].name.toLowerCase() == product_name){
+            //         thisProduct = allProducts[i]
+            //     }
+            // }
+            const productDescription = allProducts[0].description;
+            const speechOutput = "Here's the description about "+product_name+", "+productDescription+". Rate is: "+allProducts[0].price +" dollars.";
+            this.response.cardRenderer(SKILL_NAME, speechOutput);
+            this.response.speak(speechOutput).listen(listen_message);
+            this.emit(':responseReady');
+        });
+    },
+    'InfoOrder': function () {
+        
+         var product = null;
+         httpsGet('/api/products', (theResult) => {
+            const result = theResult;
+            product = JSON.parse(result).data[0];
+            
+        });
+        
+        
+        
+        
+        var speechOutput = "No orders to fetch";
+        var cardMessage = "No orders to fetch";
+        httpsGet('/api/orders', (theResult) => {
+            const result = theResult;
+            const orders = JSON.parse(result).data;
+            var product_names = [];
+            var ordered_by=[];
+            var order_id=[];
+            var status=[];
+            var total=[];
+            
+            //console.log(allProducts)
+            
+           
+            
+            for (let i=0; i<orders.length;i++){
+                
+                
+                product_names.push(orders[i].product.name);
+                ordered_by.push(orders[i].customer.firstName);
+                order_id.push(orders[i].orderNumber);
+                status.push(orders[i].state);
+                total.push(orders[i].total);
+            }
+            // var productIndex = orders.length -1;
+            // product_names.push(orders[productIndex].product.name);
+            //     ordered_by.push(orders[productIndex].customer.firstName);
+            //     order_id.push(orders[productIndex].orderNumber);
+            //     status.push(orders[productIndex].state);
+            //console.log(orders);
+            speechOutput = "";
+            cardMessage = "";
+            console.log("Before loop");
+            for (let i=0; i<orders.length;i++){
+                
+                
+                speechOutput = speechOutput+ "Order for "+product_names[i]+ " with order number "+order_id[i]+" and amount "+total[i]+" dollars ordered by "+ordered_by[i]+" is "+ status[i]+", ";
+                
+            }
+            // let i=0;
+            // speechOutput = speechOutput+ "Order for "+product_names[i]+ " ordered by "+ordered_by[i]+" is "+ status[i]+ ", ";
+            
+            console.log("SPech output------->"+speechOutput);
+            this.response.cardRenderer(SKILL_NAME, speechOutput);
+            this.response.speak(speechOutput).listen(listen_message);
             this.emit(':responseReady');
         });
     },
     'GetOrder': function () {
-        httpsGet('/api/getorder/5c9b9f56245b2371540abce6', (theResult) => {
+       
+        const order_number = this.event.request.intent.slots.order_number.value;
+        httpsGet('/api/orders', (theResult) => {
             const result = theResult;
+            const orders = JSON.parse(result).data;
 
-            const speechOutput = JSON.parse(result).message;
-            this.response.cardRenderer(SKILL_NAME, result);
-            this.response.speak(speechOutput);
+            var order=null;
+            
+            for (let i=0; i<orders.length;i++){
+                if(order_number == orders[i].orderNumber){
+                    order = orders[i];
+                }
+            }
+            
+            const speechOutput =  "Order for "+ order.product.name + " with order number "+order.orderNumber+" ordered by "+order.customer.firstName+" is "+ order.state+", ";
+            
+            
+            this.response.cardRenderer(SKILL_NAME, speechOutput);
+            this.response.speak(speechOutput).listen(listen_message);
             this.emit(':responseReady');
         });
     },
-    'DeleteOrder': function () {
-        httpsDelete('/api/deleteorder/1', (theResult) => {
+    'CancelOrder': function () {
+        const order_number = this.event.request.intent.slots.order_number.value;
+        httpsDelete('/api/order/'+order_number, (theResult) => {
             const result = theResult;
 
             const speechOutput = JSON.parse(result).message;
             this.response.cardRenderer(SKILL_NAME, result);
-            this.response.speak(speechOutput);
+            this.response.speak(speechOutput).listen(listen_message);
             this.emit(':responseReady');
         });
     },
-    'UpdateOrder': function () {
-        httpsPut('/api/updateorder/5c9b9f56245b2371540abce6', (theResult) => {
+    'ModifyOrder': function () {
+        const order_number = this.event.request.intent.slots.order_number.value;
+        const address1 = this.event.request.intent.slots.address_one.value;
+        const address2 = this.event.request.intent.slots.address_two.value;
+        const state = this.event.request.intent.slots.state.value;
+        const zip = this.event.request.intent.slots.zip.value;
+        const phoneNumber = this.event.request.intent.slots.phone.value;
+        const firstName = this.event.request.intent.slots.firstName.value;
+        const lastName = this.event.request.intent.slots.lastName.value;
+        
+         var updateParams = {
+                "shippingAddress":{
+                    "address1":address1,
+                    "address2":address2,
+                    "state":state,
+                    "zip":zip
+                },
+                "customer":{
+                    "phoneNumber":phoneNumber,
+                    "firstName":firstName,
+                    "lastName":lastName
+                }
+                
+            };
+            console.log(updateParams);
+         httpsPut(updateParams,'/api/order/'+order_number, (theResult) => {
+             console.log(theResult);
             const result = theResult;
+            
+           
 
             const speechOutput = JSON.parse(result).message;
-            this.response.cardRenderer(SKILL_NAME, result);
-            this.response.speak(speechOutput);
+            this.response.cardRenderer(SKILL_NAME, speechOutput);
+            this.response.speak(speechOutput+" Goodbye and have a nice day");
             this.emit(':responseReady');
         });
     },
     'PlaceOrder': function () {
-        // const username=httpGet()
+        //const username=httpGet()
         //const name = this.event.request.intent.slots.name.value;
         //const product_name = this.event.request.intent.slots.product_name.value;
         //const product_quantity = this.event.request.intent.slots.product_quantity.value;
@@ -122,24 +212,62 @@ const handlers = {
         //const email = this.event.request.intent.slots.email.value;
 
         //const output = "Order is placed:" + product_quantity + product_name + ", receipt sent to " + email;
-        //this.response.cardRenderer(SKILL_NAME, output);
-        //this.response.speak(output).listen("more");
-        //this.emit(':responseReady');
-        var requestData = '{ "shippingAddress": {	"address1": "3230 Reagenea Dr",  	"address2": "3230 Reagenea Dr",    	"state": "Dallas",    	"zip": 75098	},	"billingAddress": {    	"address1": "3230 Reagenea Dr",    	"address2": "3230 Reagenea Dr",    	"state": "Dallas",   	"zip": 75098	}}';
-        httpsPost(requestData, '/api/createorder', (theResult) => {
-            const result = theResult;
-
-            const speechOutput = JSON.parse(result).message;
-            this.response.cardRenderer(SKILL_NAME, result);
-            this.response.speak(speechOutput);
+        
+        const address1=this.event.request.intent.slots.address_one.value;
+        const address2=this.event.request.intent.slots.address_two.value;
+        const state=this.event.request.intent.slots.state.value;
+        const zip=this.event.request.intent.slots.zip.value;
+        const shippingMethod=this.event.request.intent.slots.shippingMethod.value;
+        const paymentMethod=this.event.request.intent.slots.paymentMethod.value;
+        const firstName=this.event.request.intent.slots.firstName.value;
+        const lastName=this.event.request.intent.slots.lastName.value;
+        const phone=this.event.request.intent.slots.phone.value;
+        const quantity=this.event.request.intent.slots.quantity.value;
+        
+        
+ 
+        var data={
+    "total": 30,
+    "product": "5c9d3c4ce5ca625d33612e8f",
+    "shippingAddress": {
+        "address1": address1,
+        "address2": address2,
+        "state": state,
+        "zip": zip
+    },
+    "billingAddress": {
+       "address1": address1,
+        "address2": address2,
+        "state": state,
+        "zip": zip
+    },
+    "salesTax": "10.25",
+    "shippingMethod": shippingMethod+ " delivery",
+    "state": "pending",
+    "paymentMethod": paymentMethod,
+    "quantity": quantity,
+    "customer": {
+        "firstName": firstName,
+        "lastName": lastName,
+        "email": "dummytest@testmail.com",
+        "phoneNumber": phone
+    }
+}
+      
+        httpsPost(data, '/api/orders', (theResult) => {
+            const result = JSON.parse(theResult);
+            console.log(theResult);
+            const speechOutput = result.message + "with order number " +result.data.orderNumber;
+            this.response.cardRenderer(SKILL_NAME, speechOutput);
+            this.response.speak(speechOutput+". Goodbye. Have a great day ahead!");
             this.emit(':responseReady');
         });
     },
     'AMAZON.HelpIntent': function () {
         const speechOutput = HELP_MESSAGE;
-        const reprompt = HELP_REPROMPT;
+        
 
-        this.response.speak(speechOutput).listen(reprompt);
+        this.response.speak(speechOutput).listen(listen_message);
         this.emit(':responseReady');
     },
     'AMAZON.CancelIntent': function () {
@@ -156,7 +284,7 @@ function httpsGet(apiPath, callback) {
 
     var options = {
         port: 443,
-        host: 'softwidgetapi.herokuapp.com',
+        host: 'softwidgetapi-qa.herokuapp.com',
         path: apiPath,
         method: 'GET',
     };
@@ -184,7 +312,7 @@ function httpsDelete(apiPath, callback) {
 
     var options = {
         port: 443,
-        host: 'softwidgetapi.herokuapp.com',
+        host: 'softwidgetapi-qa.herokuapp.com',
         path: apiPath,
         method: 'DELETE',
     };
@@ -208,14 +336,20 @@ function httpsDelete(apiPath, callback) {
     req.end();
 }
 
-function httpsPut(apiPath, callback) {
+function httpsPut(data,apiPath, callback) {
 
     var options = {
         port: 443,
-        host: 'softwidgetapi.herokuapp.com',
+        host: 'softwidgetapi-qa.herokuapp.com',
         path: apiPath,
-        method: 'PUT',
+        method:'PUT',
+        headers: {
+    'Content-Type': 'application/json',
+    //'Content-Length': data.length
+  }
     };
+    
+    
 
     var req = https.request(options, res => {
         res.setEncoding('utf8');
@@ -224,6 +358,7 @@ function httpsPut(apiPath, callback) {
         //accept incoming data asynchronously
         res.on('data', chunk => {
             responseString = responseString + chunk;
+            console.log(chunk);
         });
 
         //return the data when streaming is complete
@@ -233,16 +368,21 @@ function httpsPut(apiPath, callback) {
         });
 
     });
+    req.write(JSON.stringify(data));
     req.end();
 }
 
 function httpsPost(requestData, apiPath, callback) {
     var options = {
         port: 443,
-        host: 'softwidgetapi.herokuapp.com',
+        host: 'softwidgetapi-qa.herokuapp.com',
         path: apiPath,
-        json: requestData,
+        //json: requestData,
         method: 'POST',
+        headers: {
+    'Content-Type': 'application/json',
+    //'Content-Length': data.length
+  }
     };
 
     var req = https.request(options, res => {
@@ -261,6 +401,7 @@ function httpsPost(requestData, apiPath, callback) {
         });
 
     });
+    req.write(JSON.stringify(requestData))
     req.end();
 }
 
