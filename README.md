@@ -1,4 +1,4 @@
-# Soft Widget Market
+## Soft Widget Market
 Repository for Soft Widget Market Alexa Skill.
 
 ## Interaction Model
